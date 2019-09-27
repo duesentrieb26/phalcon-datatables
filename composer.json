@@ -14,9 +14,8 @@
         "email": "swestfeld@gmail.com"
       }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
-
     },
     "extra": {
       "branch-alias": {
@@ -24,9 +23,7 @@
       }
     },
     "require-dev": {
-      "crysalead/kahlan": "dev-master",
-      "fzaninotto/faker": "1.5.*@dev"
-
-    },
-    "minimum-stability": "dev"
+      "crysalead/kahlan": "4.5.*",
+      "fzaninotto/faker": "1.8.*"
+    }
 }
