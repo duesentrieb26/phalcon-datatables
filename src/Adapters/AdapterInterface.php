@@ -9,7 +9,8 @@ use DataTables\ParamsParser;
  *
  * @package DataTables\Adapters
  */
-abstract class AdapterInterface {
+abstract class AdapterInterface
+{
 
   /**
    * @var ParamsParser
@@ -29,7 +30,8 @@ abstract class AdapterInterface {
    *
    * @param $length
    */
-  public function __construct($length) {
+  public function __construct($length)
+  {
     $this->length = $length;
   }
 
@@ -45,7 +47,8 @@ abstract class AdapterInterface {
    * @param ParamsParser $parser
    *
    */
-  public function setParser(ParamsParser $parser) {
+  public function setParser(ParamsParser $parser)
+  {
     $this->parser = $parser;
   }
 
@@ -55,13 +58,14 @@ abstract class AdapterInterface {
    * @param array $columns
    *
    */
-  public function setColumns(array $columns) {
+  public function setColumns(array $columns)
+  {
     foreach ($columns as $column) {
-      $columnSet = array(
+      $columnSet = [
         'tableName' => null,
         'fieldName' => null,
-        'alias'     => null
-      );
+        'alias'     => null,
+      ];
       if (preg_match('/(?:(\w+)\.)?(\w+)?\s*(?:AS)?\s*(\w+)?/is', $column, $matches)) {
         $count = count($matches);
         if ($count == 4) {
@@ -69,7 +73,7 @@ abstract class AdapterInterface {
           $columnSet['fieldName'] = $matches[2];
           $columnSet['alias'] = $matches[3];
         }
-        if ($count == 3){
+        if ($count == 3) {
           $columnSet['tableName'] = $matches[1];
           $columnSet['fieldName'] = $matches[2];
           $columnSet['alias'] = $matches[2];
@@ -79,23 +83,27 @@ abstract class AdapterInterface {
     }
   }
 
-  public function getColumns() {
+  public function getColumns()
+  {
     return $this->columns;
   }
 
-  public function columnExists($column) {
+  public function columnExists($column)
+  {
     return in_array($column, $this->columns);
   }
 
-  public function getParser() {
+  public function getParser()
+  {
     return $this->parser;
   }
 
-  public function formResponse($options) {
+  public function formResponse($options)
+  {
     $defaults = [
       'total'    => 0,
       'filtered' => 0,
-      'data'     => []
+      'data'     => [],
     ];
     $options += $defaults;
 
@@ -119,11 +127,13 @@ abstract class AdapterInterface {
     return $response;
   }
 
-  public function sanitaze($string) {
+  public function sanitaze($string)
+  {
     return mb_substr($string, 0, $this->length);
   }
 
-  public function bind($case, $closure) {
+  public function bind($case, $closure)
+  {
     switch ($case) {
       case "global_search":
         $search = $this->parser->getSearchValue();
@@ -166,13 +176,19 @@ abstract class AdapterInterface {
         break;
       case "order":
         $order = $this->parser->getOrder();
-        if (!$order) return;
+        if (!$order) {
+          return;
+        }
         $orderArray = [];
-        foreach($order as $orderBy) {
-          if (!isset($orderBy['dir']) || !isset($orderBy['column'])) continue;
+        foreach ($order as $orderBy) {
+          if (!isset($orderBy['dir']) || !isset($orderBy['column'])) {
+            continue;
+          }
           $orderDir = $orderBy['dir'];
           $column = $this->parser->getColumnById($orderBy['column']);
-          if (is_null($column) || !$this->columnExists($column)) continue;
+          if (is_null($column) || !$this->columnExists($column)) {
+            continue;
+          }
           $orderArray[] = "{$column} {$orderDir}";
         }
         $closure($orderArray);

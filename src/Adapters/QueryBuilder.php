@@ -1,9 +1,11 @@
 <?php
+
 namespace DataTables\Adapters;
 
 use Phalcon\Paginator\Adapter\QueryBuilder as PQueryBuilder;
 
-class QueryBuilder extends AdapterInterface {
+class QueryBuilder extends AdapterInterface
+{
   /**
    * @var \Phalcon\Mvc\Model\Query\BuilderInterface
    */
@@ -14,69 +16,71 @@ class QueryBuilder extends AdapterInterface {
    */
   protected $typeMapping
     = [
-      "equal"         => array(
+      "equal"         => [
         "clause" => "%s = %s",
         "value"  => "%s",
-      ),
-      "like"          => array(
+      ],
+      "like"          => [
         "clause" => "%s LIKE %s",
         "value"  => "%s",
-      ),
-      "greater"       => array(
+      ],
+      "greater"       => [
         "clause" => "%s > %s",
         "value"  => "%s",
-      ),
-      "greater_equal" => array(
+      ],
+      "greater_equal" => [
         "clause" => "%s >= %s",
-        "value"  => "%s"
-      ),
-      "lower"         => array(
+        "value"  => "%s",
+      ],
+      "lower"         => [
         "clause" => "%s < %s",
-        "value"  => "%s"
-      ),
-      "lower_equal"   => array(
+        "value"  => "%s",
+      ],
+      "lower_equal"   => [
         "clause" => "%s <= %s",
-        "value"  => "%s"
-      ),
-      "not_equal"     => array(
+        "value"  => "%s",
+      ],
+      "not_equal"     => [
         "clause" => "%s != %s",
-        "value"  => "%s"
-      ),
-      "not_like"      => array(
+        "value"  => "%s",
+      ],
+      "not_like"      => [
         "clause" => "%s NOT LIKE %s",
-        "value"  => "%s"
-      ),
-      "in"            => array(
+        "value"  => "%s",
+      ],
+      "in"            => [
         "clause" => " %s IN (%s)",
-        "value"  => "%s"
-      ),
-      "not_in"        => array(
+        "value"  => "%s",
+      ],
+      "not_in"        => [
         "clause" => "%s NOT IN (%s)",
-        "value"  => "%s"
-      ),
-      "between"       => array(
+        "value"  => "%s",
+      ],
+      "between"       => [
         "clause" => "%s BETWEEN %s AND %s",
-        "value"  => "%s"
-      ),
-      "not_between"   => array(
+        "value"  => "%s",
+      ],
+      "not_between"   => [
         "clause" => "%s NOT BETWEEN %s AND %s",
-        "value"  => "%s"
-      ),
-      "regex"         => array(
+        "value"  => "%s",
+      ],
+      "regex"         => [
         "clause" => "%s REGEX %s",
-        "value"  => "%s"
-      ),
-      "not_regex"     => array(
+        "value"  => "%s",
+      ],
+      "not_regex"     => [
         "clause" => "%s NOT REGEX %s",
-        "value"  => "%s"
-      ),
+        "value"  => "%s",
+      ],
     ];
 
-  public function setBuilder($builder) {
+  public function setBuilder($builder)
+  {
     $this->builder = $builder;
   }
 
-  public function getResponse() {
+  public function getResponse()
+  {
     $builder = new PQueryBuilder(
       [
         'builder' => $this->builder,
@@ -135,7 +139,7 @@ class QueryBuilder extends AdapterInterface {
         'total'    => $total->total_items,
         'filtered' => $filtered->total_items,
         'data'     => $filtered->items->toArray(),
-        'phql' => $this->builder->getPhql()
+        'phql'     => $this->builder->getPhql(),
       ]
     );
   }
