@@ -89,7 +89,7 @@ class QueryBuilder extends AdapterInterface
       ]
     );
 
-    $total = $builder->getPaginate();
+    $total = $builder->paginate();
 
     $this->bind(
       'global_search', function ($column, $search) {
@@ -131,14 +131,14 @@ class QueryBuilder extends AdapterInterface
         'page'    => $this->parser->getPage(),
       ]
     );
-
-    $filtered = $builder->getPaginate();
+    /** @var \Phalcon\Paginator\Repository $filtered */
+    $filtered = $builder->paginate();
 
     return $this->formResponse(
       [
-        'total'    => $total->total_items,
-        'filtered' => $filtered->total_items,
-        'data'     => $filtered->items->toArray(),
+        'total'    => $total->getTotalItems(),
+        'filtered' => $filtered->getTotalItems(),
+        'data'     => $filtered->getItems(),
         'phql'     => $this->builder->getPhql(),
       ]
     );

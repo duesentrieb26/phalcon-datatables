@@ -5,15 +5,15 @@ namespace DataTables;
 use DataTables\Adapters\QueryBuilder;
 use DataTables\Adapters\ResultSet;
 use DataTables\Adapters\ArrayAdapter;
+use Phalcon\Di\Injectable;
 use Phalcon\Http\Response;
-use Phalcon\Plugin;
 
 /**
  * Class DataTable
  *
  * @package DataTables
  */
-class DataTable extends Plugin
+class DataTable extends Injectable
 {
   /**
    * @var array
