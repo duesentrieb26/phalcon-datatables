@@ -1,32 +1,35 @@
 {
-    "name": "duesentrieb26/phalcon-datatables",
-    "description": "DataTables adapter for Phalcon Framework",
-    "keywords": ["Phalcon", "DataTables", "Plugin"],
-    "license": "MIT",
-    "autoload": {
-      "psr-4": {
-        "DataTables\\": "src/"
-      }
-    },
-    "authors": [
-      {
-        "name": "Sascha Westfeld",
-        "email": "swestfeld@gmail.com"
-      }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-
-    },
-    "extra": {
-      "branch-alias": {
-        "dev_master": "1.0-dev"
-      }
-    },
-    "require-dev": {
-      "crysalead/kahlan": "dev-master",
-      "fzaninotto/faker": "1.5.*@dev"
-
-    },
-    "minimum-stability": "dev"
+  "name": "duesentrieb26/phalcon-datatables",
+  "description": "DataTables adapter for Phalcon Framework",
+  "keywords": [
+    "Phalcon",
+    "DataTables",
+    "Plugin"
+  ],
+  "license": "MIT",
+  "type": "library",
+  "version": "1.0.3",
+  "autoload": {
+    "psr-4": {
+      "DataTables\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Sascha Westfeld",
+      "email": "swestfeld@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {},
+  "extra": {
+    "branch-alias": {
+      "dev_master": "1.0-dev"
+    }
+  },
+  "require-dev": {
+    "crysalead/kahlan": "dev-master",
+    "fzaninotto/faker": "1.5.*@dev"
+  },
+  "minimum-stability": "dev"
 }
