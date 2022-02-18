@@ -7,7 +7,7 @@ use DataTables\Adapters\ResultSet;
 use DataTables\Adapters\ArrayAdapter;
 use Phalcon\Http\Response;
 
-class DataTable extends \Phalcon\Mvc\User\Plugin
+class DataTable extends \Phalcon\Di\Injectable
 {
     protected $options;
     protected $params;
