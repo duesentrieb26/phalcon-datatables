@@ -1,51 +1,66 @@
 <?php
+
 namespace DataTables\Adapters;
 
 use Phalcon\Mvc\Model\Resultset as PhalconResultSet;
 
-class ResultSet extends AdapterInterface {
+class ResultSet extends AdapterInterface
+{
 
   protected $resultSet;
   protected $filter = [];
-  protected $order  = [];
+  protected $order = [];
 
-  public function getResponse() {
-    $limit  = $this->parser->getLimit();
+  public function getResponse()
+  {
+    $limit = $this->parser->getLimit();
     $offset = $this->parser->getOffset();
-    $total  = $this->resultSet->count();
+    $total = $this->resultSet->count();
 
-    $this->bind('global_search', function($column, $search) {
+    $this->bind(
+      'global_search', function ($column, $search) {
       $this->filter[$column][] = $search;
-    });
+    }
+    );
 
-    $this->bind('column_search', function($column, $search) {
+    $this->bind(
+      'column_search', function ($column, $search) {
       $this->filter[$column][] = $search;
-    });
+    }
+    );
 
-    $this->bind('order', function($order) {
+    $this->bind(
+      'order', function ($order) {
       $this->order = $order;
-    });
+    }
+    );
 
-    if(count($this->filter)) {
-      $filter = $this->resultSet->filter(function($item){
-        $check = true;
+    if (count($this->filter)) {
+      $filter = $this->resultSet->filter(
+        function ($item) {
+          $check = true;
 
-        foreach($this->filter as $column=>$filters) {
-          foreach($filters as $search) {
-            $check = (strpos($item->$column, $search) !== false);
-            if (!$check) break 2;
+          foreach ($this->filter as $column => $filters) {
+            foreach ($filters as $search) {
+              $check = (strpos($item->$column, $search) !== false);
+              if (!$check) {
+                break 2;
+              }
+            }
+          }
+
+          if ($check) {
+            return $item;
           }
         }
-
-        if ($check) {
-          return $item;
-        }
-      });
+      );
 
       $filtered = count($filter);
-      $items = array_map(function($item) {
-        return $item->toArray();
-      }, $filter);
+      $items = array_map(
+        function ($item) {
+          return $item->toArray();
+        }, $filter
+      );
     } else {
       $filtered = $total;
       $this->resultSet->setHydrateMode(PhalconResultSet::HYDRATE_RECORDS);
@@ -55,11 +70,11 @@ class ResultSet extends AdapterInterface {
     if ($this->order) {
       $args = [];
 
-      foreach($this->order as $order) {
+      foreach ($this->order as $order) {
         $tmp = [];
         list($column, $dir) = explode(' ', $order);
 
-        foreach($items as $key=>$item) {
+        foreach ($items as $key => $item) {
           $tmp[$key] = $item[$column];
         }
 
@@ -79,14 +94,17 @@ class ResultSet extends AdapterInterface {
       $items = array_slice($items, 0, $limit);
     }
 
-    return $this->formResponse([
-      'total'     => (int)$total,
-      'filtered'  => (int)$filtered,
-      'data'      => $items,
-    ]);
+    return $this->formResponse(
+      [
+        'total'    => (int)$total,
+        'filtered' => (int)$filtered,
+        'data'     => $items,
+      ]
+    );
   }
 
-  public function setResultSet($resultSet) {
+  public function setResultSet($resultSet)
+  {
     $this->resultSet = $resultSet;
   }
 

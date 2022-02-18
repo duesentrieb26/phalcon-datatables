@@ -2,7 +2,7 @@
 
 namespace DataTables;
 
-use \Phalcon\Di\Injectable;
+use Phalcon\Di\Injectable;
 
 class ParamsParser extends Injectable {
   protected $params = [];
@@ -10,18 +10,18 @@ class ParamsParser extends Injectable {
 
   public function __construct($limit) {
     $params = [
-      'draw' => null,
-      'start' => 1,
-      'length' => $limit,
-      'columns' => [],
-      'search' => [],
-      'order' => [],
+      'draw'          => null,
+      'start'         => 1,
+      'length'        => $limit,
+      'columns'       => [],
+      'search'        => [],
+      'order'         => [],
       'extFilterData' => [],
     ];
 
     $request = $this->di->get('request');
     $requestParams = $request->isPost() ? $request->getPost() : $request->getQuery();
-    $this->params = (array) $requestParams + $params;
+    $this->params = (array)$requestParams + $params;
     $this->setPage();
   }
 
@@ -31,7 +31,7 @@ class ParamsParser extends Injectable {
 
   public function setPage($page = null) {
     if (!$page) {
-      $this->page = (int) (floor($this->params['start'] / $this->params['length']) + 1);
+      $this->page = (int)(floor($this->params['start'] / $this->params['length']) + 1);
 
       return $this;
     }

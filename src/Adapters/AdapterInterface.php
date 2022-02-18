@@ -57,11 +57,11 @@ abstract class AdapterInterface {
    */
   public function setColumns(array $columns) {
     foreach ($columns as $column) {
-      $columnSet = array(
+      $columnSet = [
         'tableName' => null,
         'fieldName' => null,
-        'alias'     => null
-      );
+        'alias'     => null,
+      ];
       if (preg_match('/(?:(\w+)\.)?(\w+)?\s*(?:AS)?\s*(\w+)?/is', $column, $matches)) {
         $count = count($matches);
         if ($count == 4) {
@@ -69,7 +69,7 @@ abstract class AdapterInterface {
           $columnSet['fieldName'] = $matches[2];
           $columnSet['alias'] = $matches[3];
         }
-        if ($count == 3){
+        if ($count == 3) {
           $columnSet['tableName'] = $matches[1];
           $columnSet['fieldName'] = $matches[2];
           $columnSet['alias'] = $matches[2];
@@ -95,7 +95,7 @@ abstract class AdapterInterface {
     $defaults = [
       'total'    => 0,
       'filtered' => 0,
-      'data'     => []
+      'data'     => [],
     ];
     $options += $defaults;
 
@@ -106,11 +106,16 @@ abstract class AdapterInterface {
 
     if (count($options['data'])) {
       foreach ($options['data'] as $item) {
-        if (isset($item['id'])) {
-          $item['DT_RowId'] = $item['id'];
+        if ($item instanceof \Phalcon\Mvc\Model\Row) {
+          $itemArray = $item->toArray();
+        } else {
+          $itemArray = $item;
+        }
+        if (isset($itemArray['id'])) {
+          $itemArray['DT_RowId'] = $itemArray['id'];
         }
 
-        $response['data'][] = $item;
+        $response['data'][] = $itemArray;
       }
     } else {
       $response['data'] = [];
@@ -166,13 +171,19 @@ abstract class AdapterInterface {
         break;
       case "order":
         $order = $this->parser->getOrder();
-        if (!$order) return;
+        if (!$order) {
+          return;
+        }
         $orderArray = [];
-        foreach($order as $orderBy) {
-          if (!isset($orderBy['dir']) || !isset($orderBy['column'])) continue;
+        foreach ($order as $orderBy) {
+          if (!isset($orderBy['dir']) || !isset($orderBy['column'])) {
+            continue;
+          }
           $orderDir = $orderBy['dir'];
           $column = $this->parser->getColumnById($orderBy['column']);
-          if (is_null($column) || !$this->columnExists($column)) continue;
+          if (is_null($column) || !$this->columnExists($column)) {
+            continue;
+          }
           $orderArray[] = "{$column} {$orderDir}";
         }
         $closure($orderArray);
@@ -180,7 +191,5 @@ abstract class AdapterInterface {
       default:
         throw new \Exception('Unknown bind type');
     }
-
   }
-
 }
