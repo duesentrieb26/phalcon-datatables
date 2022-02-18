@@ -9,8 +9,7 @@ use DataTables\ParamsParser;
  *
  * @package DataTables\Adapters
  */
-abstract class AdapterInterface
-{
+abstract class AdapterInterface {
 
   /**
    * @var ParamsParser
@@ -30,8 +29,7 @@ abstract class AdapterInterface
    *
    * @param $length
    */
-  public function __construct($length)
-  {
+  public function __construct($length) {
     $this->length = $length;
   }
 
@@ -47,8 +45,7 @@ abstract class AdapterInterface
    * @param ParamsParser $parser
    *
    */
-  public function setParser(ParamsParser $parser)
-  {
+  public function setParser(ParamsParser $parser) {
     $this->parser = $parser;
   }
 
@@ -58,8 +55,7 @@ abstract class AdapterInterface
    * @param array $columns
    *
    */
-  public function setColumns(array $columns)
-  {
+  public function setColumns(array $columns) {
     foreach ($columns as $column) {
       $columnSet = [
         'tableName' => null,
@@ -83,23 +79,19 @@ abstract class AdapterInterface
     }
   }
 
-  public function getColumns()
-  {
+  public function getColumns() {
     return $this->columns;
   }
 
-  public function columnExists($column)
-  {
+  public function columnExists($column) {
     return in_array($column, $this->columns);
   }
 
-  public function getParser()
-  {
+  public function getParser() {
     return $this->parser;
   }
 
-  public function formResponse($options)
-  {
+  public function formResponse($options) {
     $defaults = [
       'total'    => 0,
       'filtered' => 0,
@@ -114,11 +106,16 @@ abstract class AdapterInterface
 
     if (count($options['data'])) {
       foreach ($options['data'] as $item) {
-        if (isset($item['id'])) {
-          $item['DT_RowId'] = $item['id'];
+        if ($item instanceof \Phalcon\Mvc\Model\Row) {
+          $itemArray = $item->toArray();
+        } else {
+          $itemArray = $item;
+        }
+        if (isset($itemArray['id'])) {
+          $itemArray['DT_RowId'] = $itemArray['id'];
         }
 
-        $response['data'][] = $item;
+        $response['data'][] = $itemArray;
       }
     } else {
       $response['data'] = [];
@@ -127,13 +124,11 @@ abstract class AdapterInterface
     return $response;
   }
 
-  public function sanitaze($string)
-  {
+  public function sanitaze($string) {
     return mb_substr($string, 0, $this->length);
   }
 
-  public function bind($case, $closure)
-  {
+  public function bind($case, $closure) {
     switch ($case) {
       case "global_search":
         $search = $this->parser->getSearchValue();
@@ -196,7 +191,5 @@ abstract class AdapterInterface
       default:
         throw new \Exception('Unknown bind type');
     }
-
   }
-
 }
