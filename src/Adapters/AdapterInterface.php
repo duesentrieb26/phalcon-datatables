@@ -106,7 +106,7 @@ abstract class AdapterInterface {
 
     if (count($options['data'])) {
       foreach ($options['data'] as $item) {
-        if ($item instanceof \Phalcon\Mvc\Model\Row) {
+        if (is_object($item)) {
           $itemArray = $item->toArray();
         } else {
           $itemArray = $item;
