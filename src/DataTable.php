@@ -90,6 +90,9 @@ class DataTable extends Injectable
   {
     if (empty($columns)) {
       $columns = $builder->getColumns();
+      if (!$columns){
+        $columns = '';
+      }
       $columns = (is_array($columns)) ? $columns : array_map('trim', explode(',', $columns));
     }
 
